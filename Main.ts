@@ -5,6 +5,7 @@ import {EditFoodByName} from "./Function/EditFoodByName";
 import {question} from "readline-sync";
 import {ShowFoodsByType} from "./Function/ShowFoodsByType";
 import {DeleteFoodsByType} from "./Function/DeleteFoodsByType";
+import {Back} from "./Function/Back";
 
 let food1 = new Food('bac siu', 45000, 'coffee', 'iced white filter coffee & condensed milk', 50);
 let food2 = new Food('phin den da', 39000, 'coffee', 'iced black coffee', 20);
@@ -35,34 +36,39 @@ export function Main() {
         case 0:
             foodManagement.sort();
             console.table(foodManagement.menu);
-            Main();
+            Back();
             break;
         case 1:
             AddFood();
             console.log('Add the food successfully!');
-            Main();
+            Back();
             break;
         case 2:
             EditFoodByName();
-            Main();
+            Back();
             break;
         case 3:
             let nameToBeDelete = question('Enter name: ');
-            foodManagement.deleteFood(nameToBeDelete);
-            Main();
+            let choice: boolean = readlineSync.keyInYN('Are you sure? You want to delete the food?');
+            if (choice === false) {
+                console.log('Delete action cancelled. Return to main menu.');
+                Main();
+            } else {
+                foodManagement.deleteFood(nameToBeDelete);
+                Back();
+            }
             break;
         case 4:
             let nameToBeSearch = question('Enter name: ');
             console.table(foodManagement.searchFoodWithSimilarName(nameToBeSearch));
-            Main();
+            Back();
             break;
         case 5:
             ShowFoodsByType();
-            Main();
+            Back();
             break;
         case 6:
             DeleteFoodsByType();
-            Main();
             break;
         default:
             console.log('Goodbye, see you again!');
